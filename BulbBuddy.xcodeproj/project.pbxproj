@@ -15,6 +15,7 @@
 		0ABDA14625A2DF6E007FBCDE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0ABDA14525A2DF6E007FBCDE /* Assets.xcassets */; };
 		494B078325A322B000368204 /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494B078225A322B000368204 /* Room.swift */; };
 		494B078B25A32A3B00368204 /* Room.List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494B078A25A32A3B00368204 /* Room.List.swift */; };
+		EE78B55C25BD7A2500CC3802 /* HomeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE78B55B25BD7A2500CC3802 /* HomeKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +74,7 @@
 		494B078225A322B000368204 /* Room.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Room.swift; sourceTree = "<group>"; };
 		494B078A25A32A3B00368204 /* Room.List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Room.List.swift; sourceTree = "<group>"; };
 		4989A70925A33AEA004E2362 /* HomeKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HomeKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS7.2.sdk/System/Library/Frameworks/HomeKit.framework; sourceTree = DEVELOPER_DIR; };
+		EE78B55B25BD7A2500CC3802 /* HomeKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HomeKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS7.1.sdk/System/Library/Frameworks/HomeKit.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +82,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EE78B55C25BD7A2500CC3802 /* HomeKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -148,6 +151,7 @@
 		4989A70825A33AEA004E2362 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EE78B55B25BD7A2500CC3802 /* HomeKit.framework */,
 				4989A70925A33AEA004E2362 /* HomeKit.framework */,
 			);
 			name = Frameworks;
