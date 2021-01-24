@@ -31,9 +31,43 @@
 /// THE SOFTWARE.
 
 
+import HomeKit
+
+final class Room: Identifiable, ObservableObject {
+    let name: String
+    
+    init(name: String) {
+        self.name = name
+    }
+}
+
 
 // MARK: - internal
+extension Room {
+    final class Store: NSObject, ObservableObject {
+        @Published var rooms: [Room] = []
+        
+        override init() {
+            super.init()
+            manager.delegate = self
+        }
+        
+        private let manager = HMHomeManager()
+    
+    }
+}
+
 
 // MARK: - private
-
+private extension Room {
+    convenience init?(room: HMRoom) {
+        self.init(name: room.name)
+    }
+}
 // MARK: - HMHomeManagerDelegate
+
+extension Room.Store: HMHomeManagerDelegate {
+    func homeManagerDidUpdateHomes(_ manager: HMHomeManager) {
+        rooms = manager.primaryHome?.rooms.compactMap(Room.init) ?? []
+    }
+}

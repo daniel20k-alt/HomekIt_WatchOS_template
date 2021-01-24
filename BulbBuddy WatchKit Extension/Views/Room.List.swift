@@ -32,4 +32,32 @@
 
 import SwiftUI
 
+extension Room {
+    struct List {
+        @StateObject private var store = Store()
+    }
+}
+
 // MARK: - View
+
+extension Room.List: View {
+    var body: some View {
+        List(store.rooms, rowContent: Row.init)
+    }
+}
+
+
+private struct Row: View {
+    @ObservedObject var room: Room
+    
+    var body: some View {
+        Text(room.name)
+    }
+}
+
+
+struct Row_Previews: PreviewProvider {
+    static var previews: some View {
+        Row(room: .init(name: "Dormitor"))
+    }
+}

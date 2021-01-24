@@ -35,6 +35,6 @@ import SwiftUI
 @main
 struct App: SwiftUI.App {
   var body: some Scene {
-    WindowGroup(content: EmptyView.init)
+    WindowGroup(content: Room.List.init)
   }
 }
