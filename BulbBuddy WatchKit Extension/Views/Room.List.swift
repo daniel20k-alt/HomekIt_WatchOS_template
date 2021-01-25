@@ -51,7 +51,7 @@ private struct Row: View {
     @ObservedObject var room: Room
     
     var body: some View {
-        Text(room.name)
+        Toggle(room.name, isOn: $room.lightbulbsAreOn)
     }
 }
 

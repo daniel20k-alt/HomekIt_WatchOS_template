@@ -1,15 +1,15 @@
-/// Copyright (c) 2020 Razeware LLC
-///
+/// Copyright (c) 2021 Razeware LLC
+/// 
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
 /// in the Software without restriction, including without limitation the rights
 /// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 /// copies of the Software, and to permit persons to whom the Software is
 /// furnished to do so, subject to the following conditions:
-///
+/// 
 /// The above copyright notice and this permission notice shall be included in
 /// all copies or substantial portions of the Software.
-///
+/// 
 /// Notwithstanding the foregoing, you may not use, copy, modify, merge, publish,
 /// distribute, sublicense, create a derivative work, and/or sell copies of the
 /// Software in any work that is designed, intended, or marketed for pedagogical or
@@ -17,7 +17,7 @@
 /// or information technology.  Permission for such use, copying, modification,
 /// merger, publication, distribution, sublicensing, creation of derivative works,
 /// or sale is expressly withheld.
-///
+/// 
 /// This project and source code may use libraries or frameworks that are
 /// released under various Open-Source licenses. Use of those libraries and
 /// frameworks are governed by their own individual licenses.
@@ -30,66 +30,28 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
 
-
 import HomeKit
+import struct SwiftUI.Binding
 
-final class Room: Identifiable, ObservableObject {
-    let name: String
+struct Lightbulb {
+    @Binding var isOn: Bool
     
-    @Published var lightbulbsAreOn: Bool {
-        didSet {
-            lighbulbs
-                .filter { $0.isOn != lightbulbsAreOn }
-                .forEach { $0.isOn = lightbulbsAreOn }
-        }
-    }
-    
-    init(name: String, lightbulbs: [Lightbulb] = []) {
-        self.name = name
-        self.lighbulbs = lightbulbs
-        lightbulbsAreOn = lightbulbs.allSatisfy(\.isOn)
-    }
-    private let lighbulbs: [Lightbulb]
 }
 
 
-// MARK: - internal
-extension Room {
-    final class Store: NSObject, ObservableObject {
-        @Published var rooms: [Room] = []
-        
-        override init() {
-            super.init()
-            manager.delegate = self
+extension Lightbulb {
+    init?(_ service: HMService) {
+        func characteristic(name: String) -> HMCharacteristic? {
+            service.characteristics
+                .first { $0.metadata?.manufacturerDescription == name }
         }
+        guard service.serviceType == HMServiceTypeLightbulb,
+              
+              let isOn = characteristic(name: "Power state")
+        else { return nil }
         
-        private let manager = HMHomeManager()
-    }
-}
-
-
-// MARK: - private
-private extension Room {
-    convenience init?(room: HMRoom) {
-        let lightbulbs =
-            room.accessories
-            .flatMap(\.services)
-            .compactMap(Lightbulb.init)
-        
-        guard !lightbulbs.isEmpty
-        else {
-            return nil
-        }
-          
-        self.init(
-            name: room.name,
-            lightbulbs: lightbulbs)
-    }
-}
-// MARK: - HMHomeManagerDelegate
-
-extension Room.Store: HMHomeManagerDelegate {
-    func homeManagerDidUpdateHomes(_ manager: HMHomeManager) {
-        rooms = manager.primaryHome?.rooms.compactMap(Room.init) ?? []
+        _isOn = .init(
+            get: { isOn.value as? Bool ?? .init() },
+            set: { isOn.writeValue($0) { _ in } })
     }
 }
