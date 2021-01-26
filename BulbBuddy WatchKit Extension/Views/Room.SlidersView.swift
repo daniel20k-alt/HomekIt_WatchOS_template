@@ -30,39 +30,71 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
 
-import HomeKit
-import struct SwiftUI.Binding
+import SwiftUI
 
-struct Lightbulb {
-    
-    // A Double that should be in the range of 0...1
-    typealias NormalizedValue = Double
-    
-    @Binding var isOn: Bool
-    
-    var hue: NormalizedValue
-    var saturation: NormalizedValue
-    var brightness: NormalizedValue
+extension Room {
+    struct SlidersView {
+        init(room: Room) {
+            self.room = room
+        }
+        
+        @ObservedObject private var room: Room
+    }
 }
 
+//creating the sliders
+private struct Slider {
+    private static let defaultSymbolName = "lightbulb.fill"
+    
+    init(
+        _ value: Binding<Lightbulb.NormalizedValue>,
+        minimumLabelColor: Color? = nil,
+        lineColor: (Lightbulb.NormalizedValue) -> Color,
+        maximumLabelColor: Color? = nil
+    ) {
+        
+        self.value = value
+        self.minimumLabelColor = minimumLabelColor ?? lineColor(0)
+        self.lineColor = lineColor(value.wrappedValue)
+        self.maximumLabelColor = maximumLabelColor ?? lineColor(1)
+}
 
-extension Lightbulb {
-    init?(_ service: HMService) {
-        func characteristic(name: String) -> HMCharacteristic? {
-            service.characteristics
-                .first { $0.metadata?.manufacturerDescription == name }
+private let value: Binding<Lightbulb.NormalizedValue>
+private let minimumLabelColor: Color
+private let lineColor: Color
+private let maximumLabelColor: Color
+
+}
+
+extension Room.SlidersView: View {
+    var body: some View {
+        VStack {
+            Slider($room.saturation) {
+                .init(hue: room.hue, saturation: $0, brightness: 1)
+            }
+            
         }
-        guard service.serviceType == HMServiceTypeLightbulb,
-              
-              let isOn = characteristic(name: "Power state")
-        else { return nil }
-        
-        _isOn = .init(
-            get: { isOn.value as? Bool ?? .init() },
-            set: { isOn.writeValue($0) { _ in } })
-        
-        hue = .init()
-        saturation = .init()
-        brightness = .init()
+        .navigationTitle(room.name)
+    }
+}
+
+extension Slider: View {
+    var body: some View {
+        SwiftUI.Slider(value: value,
+                       minimumValueLabel: Image(systemName: Slider.defaultSymbolName)
+                        .foregroundColor(minimumLabelColor),
+                       maximumValueLabel: Image(systemName: Slider.defaultSymbolName)
+                        .foregroundColor(maximumLabelColor),
+                       label: EmptyView.init)
+            .accentColor(lineColor)
+    }
+}
+
+struct SlidersView_Previews: PreviewProvider {
+    static var previews: some View {
+        NavigationView {
+            Room.SlidersView(room: .init(name: "Room"))
+            
+        }
     }
 }

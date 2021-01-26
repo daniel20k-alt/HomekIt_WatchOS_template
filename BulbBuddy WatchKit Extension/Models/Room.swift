@@ -44,10 +44,26 @@ final class Room: Identifiable, ObservableObject {
         }
     }
     
+    @Published var hue: Lightbulb.NormalizedValue
+    @Published var saturation: Lightbulb.NormalizedValue
+    @Published var brightness: Lightbulb.NormalizedValue
+    
     init(name: String, lightbulbs: [Lightbulb] = []) {
         self.name = name
         self.lighbulbs = lightbulbs
         lightbulbsAreOn = lightbulbs.allSatisfy(\.isOn)
+        
+        
+        let (hue, saturation, brightness) =
+            lightbulbs.first.map { ($0.hue, $0.saturation, $0.brightness) }
+            ?? (0.5, 0.5, 0.5)
+        
+        _hue = .init(initialValue: hue)
+        _saturation = .init(initialValue: saturation)
+        _brightness = .init(initialValue: brightness)
+        
+        
+        
     }
     private let lighbulbs: [Lightbulb]
 }

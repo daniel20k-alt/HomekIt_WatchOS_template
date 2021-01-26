@@ -17,6 +17,7 @@
 		494B078B25A32A3B00368204 /* Room.List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494B078A25A32A3B00368204 /* Room.List.swift */; };
 		EE78B55C25BD7A2500CC3802 /* HomeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE78B55B25BD7A2500CC3802 /* HomeKit.framework */; };
 		EE78B56725BF69CC00CC3802 /* LightBulb.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE78B56625BF69CC00CC3802 /* LightBulb.swift */; };
+		EE78B56C25C0796900CC3802 /* Room.SlidersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE78B56B25C0796900CC3802 /* Room.SlidersView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +78,7 @@
 		4989A70925A33AEA004E2362 /* HomeKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HomeKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS7.2.sdk/System/Library/Frameworks/HomeKit.framework; sourceTree = DEVELOPER_DIR; };
 		EE78B55B25BD7A2500CC3802 /* HomeKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HomeKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS7.1.sdk/System/Library/Frameworks/HomeKit.framework; sourceTree = DEVELOPER_DIR; };
 		EE78B56625BF69CC00CC3802 /* LightBulb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightBulb.swift; sourceTree = "<group>"; };
+		EE78B56B25C0796900CC3802 /* Room.SlidersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Room.SlidersView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,6 +140,7 @@
 			isa = PBXGroup;
 			children = (
 				494B078A25A32A3B00368204 /* Room.List.swift */,
+				EE78B56B25C0796900CC3802 /* Room.SlidersView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -290,6 +293,7 @@
 				494B078B25A32A3B00368204 /* Room.List.swift in Sources */,
 				0ABDA13C25A2DF6E007FBCDE /* App.swift in Sources */,
 				494B078325A322B000368204 /* Room.swift in Sources */,
+				EE78B56C25C0796900CC3802 /* Room.SlidersView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
