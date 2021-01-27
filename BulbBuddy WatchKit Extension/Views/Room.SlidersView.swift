@@ -48,31 +48,54 @@ private struct Slider {
     
     init(
         _ value: Binding<Lightbulb.NormalizedValue>,
+        minimumLabelName: String = defaultSymbolName,
         minimumLabelColor: Color? = nil,
         lineColor: (Lightbulb.NormalizedValue) -> Color,
         maximumLabelColor: Color? = nil
     ) {
         
         self.value = value
+        self.minimumLabelName = minimumLabelName
         self.minimumLabelColor = minimumLabelColor ?? lineColor(0)
         self.lineColor = lineColor(value.wrappedValue)
         self.maximumLabelColor = maximumLabelColor ?? lineColor(1)
 }
 
 private let value: Binding<Lightbulb.NormalizedValue>
+private let minimumLabelName: String
 private let minimumLabelColor: Color
 private let lineColor: Color
 private let maximumLabelColor: Color
 
 }
 
+
+private extension Color {
+    init(hue: Lightbulb.NormalizedValue) {
+        self.init(hue: hue, saturation: 1, brightness: 1)
+    }
+}
+
+
 extension Room.SlidersView: View {
     var body: some View {
         VStack {
+            
+    let hueNeighbourDistance = 1.0 / 6
+            Slider(
+                $room.hue,
+                minimumLabelColor: .init(hue: max(room.hue - hueNeighbourDistance, 0)),
+                lineColor: Color.init,
+                maximumLabelColor: .init(hue: min(room.hue - hueNeighbourDistance, 1))
+            )
+        
             Slider($room.saturation) {
                 .init(hue: room.hue, saturation: $0, brightness: 1)
             }
-            
+            Slider($room.brightness,
+                   minimumLabelName: "lightbulb.slash.fill") {
+                Color.init(hue: room.hue, saturation: room.saturation, brightness: $0)
+            }
         }
         .navigationTitle(room.name)
     }
@@ -81,7 +104,7 @@ extension Room.SlidersView: View {
 extension Slider: View {
     var body: some View {
         SwiftUI.Slider(value: value,
-                       minimumValueLabel: Image(systemName: Slider.defaultSymbolName)
+                       minimumValueLabel: Image(systemName: minimumLabelName)
                         .foregroundColor(minimumLabelColor),
                        maximumValueLabel: Image(systemName: Slider.defaultSymbolName)
                         .foregroundColor(maximumLabelColor),

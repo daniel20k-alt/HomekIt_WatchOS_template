@@ -42,7 +42,9 @@ extension Room {
 
 extension Room.List: View {
     var body: some View {
-        List(store.rooms, rowContent: Row.init)
+        NavigationView {
+            List(store.rooms, rowContent: Row.init)
+        }
     }
 }
 
@@ -51,13 +53,18 @@ private struct Row: View {
     @ObservedObject var room: Room
     
     var body: some View {
-        Toggle(room.name, isOn: $room.lightbulbsAreOn)
+        NavigationLink(
+            destination: Room.SlidersView(room: room)
+        ) {
+            Toggle(room.name, isOn: $room.lightbulbsAreOn)
+        }
     }
 }
-
-
-struct Row_Previews: PreviewProvider {
-    static var previews: some View {
-        Row(room: .init(name: "Dormitor"))
+    
+    struct Row_Previews: PreviewProvider {
+        static var previews: some View {
+            NavigationView {
+                Row(room: .init(name: "Dormitor"))
+        }
     }
 }
