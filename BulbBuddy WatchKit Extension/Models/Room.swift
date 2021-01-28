@@ -44,9 +44,32 @@ final class Room: Identifiable, ObservableObject {
         }
     }
     
-    @Published var hue: Lightbulb.NormalizedValue
-    @Published var saturation: Lightbulb.NormalizedValue
-    @Published var brightness: Lightbulb.NormalizedValue
+    @Published var hue: Lightbulb.NormalizedValue {
+        didSet {
+            sendNormalizedValue(hue, for: \.hue)
+        }
+    }
+    @Published var saturation: Lightbulb.NormalizedValue {
+        didSet {
+            let desaturatedBulbs = lighbulbs.filter {$0.saturation == 0}
+            defer {
+                desaturatedBulbs.forEach {
+                    $0.hue = hue
+                }
+            }
+            sendNormalizedValue(saturation, for: \.saturation)
+        }
+    }
+    @Published var brightness: Lightbulb.NormalizedValue {
+        didSet {
+            switch brightness {
+            case 0:
+                lightbulbsAreOn = false
+            default:
+                sendNormalizedValue(brightness, for: \.brightness)
+            }
+        }
+    }
     
     init(name: String, lightbulbs: [Lightbulb] = []) {
         self.name = name
@@ -100,6 +123,15 @@ private extension Room {
         self.init(
             name: room.name,
             lightbulbs: lightbulbs)
+    }
+    
+    
+    func sendNormalizedValue(
+        _ value: Lightbulb.NormalizedValue,
+        for keyPath: ReferenceWritableKeyPath<Lightbulb, Lightbulb.NormalizedValue>
+    ) {
+         lightbulbsAreOn = true
+        lighbulbs.forEach {$0 [keyPath: keyPath] = value }
     }
 }
 // MARK: - HMHomeManagerDelegate
