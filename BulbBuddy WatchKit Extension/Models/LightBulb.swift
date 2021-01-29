@@ -48,7 +48,6 @@ struct Lightbulb {
     private let cancellables: Set<AnyCancellable>
 }
 
-
 extension Lightbulb {
     init?(_ service: HMService) {
         func characteristic(name: String) -> HMCharacteristic? {
@@ -67,11 +66,11 @@ extension Lightbulb {
         
         guard service.serviceType == HMServiceTypeLightbulb,
               
-            let isOn = characteristic(name: "Power state"),
-        
-        let hue = binding(name: "Hue"),
-        let saturation = binding(name: "Saturation"),
-        let brightness = binding(name: "Brightness")
+              let isOn = characteristic(name: "Power state"),
+              
+              let hue = binding(name: "Hue"),
+              let saturation = binding(name: "Saturation"),
+              let brightness = binding(name: "Brightness")
         
         else { return nil }
         
@@ -86,7 +85,6 @@ extension Lightbulb {
         self.cancellables = cancellables
     }
 }
-
 
 private extension Binding where Value == Lightbulb.NormalizedValue {
     init?(

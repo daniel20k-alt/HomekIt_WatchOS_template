@@ -33,21 +33,21 @@
 import ClockKit
 
 final class ComplicationController: NSObject, CLKComplicationDataSource {
-  func getComplicationDescriptors(handler: @escaping ([CLKComplicationDescriptor]) -> Void) {
-    handler(
-      [ .init(
-          identifier: "complication", displayName: "Bulb Buddy",
-          supportedFamilies: [.modularLarge, .modularSmall]
+    func getComplicationDescriptors(handler: @escaping ([CLKComplicationDescriptor]) -> Void) {
+        handler(
+            [ .init(
+                identifier: "complication", displayName: "Bulb Buddy",
+                supportedFamilies: [.modularLarge, .modularSmall]
+            )
+            ]
         )
-      ]
-    )
-  }
-
-  func getCurrentTimelineEntry(
-    for _: CLKComplication,
-    withHandler handler: @escaping (CLKComplicationTimelineEntry?) -> Void
-  ) {
-    // Call the handler with the current timeline entry
-    handler(nil)
-  }
+    }
+    
+    func getCurrentTimelineEntry(
+        for _: CLKComplication,
+        withHandler handler: @escaping (CLKComplicationTimelineEntry?) -> Void
+    ) {
+        // Call the handler with the current timeline entry
+        handler(nil)
+    }
 }

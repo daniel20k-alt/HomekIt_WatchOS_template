@@ -48,23 +48,20 @@ extension Room.List: View {
     }
 }
 
-
 private struct Row: View {
     @ObservedObject var room: Room
     
     var body: some View {
-        NavigationLink(
-            destination: Room.SlidersView(room: room)
-        ) {
+        NavigationLink(destination: Room.SlidersView(room: room)) {
             Toggle(room.name, isOn: $room.lightbulbsAreOn)
         }
     }
 }
-    
-    struct Row_Previews: PreviewProvider {
-        static var previews: some View {
-            NavigationView {
-                Row(room: .init(name: "Dormitor"))
+
+struct Row_Previews: PreviewProvider {
+    static var previews: some View {
+        NavigationView {
+            Row(room: .init(name: "Dormitor"))
         }
     }
 }

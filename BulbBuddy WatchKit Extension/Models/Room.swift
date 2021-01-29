@@ -49,9 +49,10 @@ final class Room: Identifiable, ObservableObject {
             sendNormalizedValue(hue, for: \.hue)
         }
     }
+    
     @Published var saturation: Lightbulb.NormalizedValue {
         didSet {
-            let desaturatedBulbs = lighbulbs.filter {$0.saturation == 0}
+            let desaturatedBulbs = lighbulbs.filter { $0.saturation == 0 }
             defer {
                 desaturatedBulbs.forEach {
                     $0.hue = hue
@@ -60,6 +61,7 @@ final class Room: Identifiable, ObservableObject {
             sendNormalizedValue(saturation, for: \.saturation)
         }
     }
+    
     @Published var brightness: Lightbulb.NormalizedValue {
         didSet {
             switch brightness {
@@ -84,8 +86,6 @@ final class Room: Identifiable, ObservableObject {
         _hue = .init(initialValue: hue)
         _saturation = .init(initialValue: saturation)
         _brightness = .init(initialValue: brightness)
-        
-        
         
     }
     private let lighbulbs: [Lightbulb]
@@ -119,18 +119,17 @@ private extension Room {
         else {
             return nil
         }
-          
+        
         self.init(
             name: room.name,
             lightbulbs: lightbulbs)
     }
     
-    
     func sendNormalizedValue(
         _ value: Lightbulb.NormalizedValue,
         for keyPath: ReferenceWritableKeyPath<Lightbulb, Lightbulb.NormalizedValue>
     ) {
-         lightbulbsAreOn = true
+        lightbulbsAreOn = true
         lighbulbs.forEach {$0 [keyPath: keyPath] = value }
     }
 }

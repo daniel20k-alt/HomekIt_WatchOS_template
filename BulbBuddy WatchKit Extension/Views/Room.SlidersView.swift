@@ -59,16 +59,15 @@ private struct Slider {
         self.minimumLabelColor = minimumLabelColor ?? lineColor(0)
         self.lineColor = lineColor(value.wrappedValue)
         self.maximumLabelColor = maximumLabelColor ?? lineColor(1)
+    }
+    
+    private let value: Binding<Lightbulb.NormalizedValue>
+    private let minimumLabelName: String
+    private let minimumLabelColor: Color
+    private let lineColor: Color
+    private let maximumLabelColor: Color
+    
 }
-
-private let value: Binding<Lightbulb.NormalizedValue>
-private let minimumLabelName: String
-private let minimumLabelColor: Color
-private let lineColor: Color
-private let maximumLabelColor: Color
-
-}
-
 
 private extension Color {
     init(hue: Lightbulb.NormalizedValue) {
@@ -76,22 +75,21 @@ private extension Color {
     }
 }
 
-
 extension Room.SlidersView: View {
     var body: some View {
         VStack {
             
-    let hueNeighbourDistance = 1.0 / 6
+            let hueNeighbourDistance = 1.0 / 6
             Slider(
                 $room.hue,
                 minimumLabelColor: .init(hue: max(room.hue - hueNeighbourDistance, 0)),
                 lineColor: Color.init,
-                maximumLabelColor: .init(hue: min(room.hue - hueNeighbourDistance, 1))
-            )
-        
+                maximumLabelColor: .init(hue: min(room.hue - hueNeighbourDistance, 1)))
+            
             Slider($room.saturation) {
                 .init(hue: room.hue, saturation: $0, brightness: 1)
             }
+            
             Slider($room.brightness,
                    minimumLabelName: "lightbulb.slash.fill") {
                 Color.init(hue: room.hue, saturation: room.saturation, brightness: $0)
@@ -117,7 +115,6 @@ struct SlidersView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             Room.SlidersView(room: .init(name: "Room"))
-            
         }
     }
 }
